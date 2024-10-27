@@ -10,9 +10,9 @@ import { compare } from 'bcryptjs'
 import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 import { PrismaService } from 'src/prisma/prisma.service'
 import {
-  AuthenticateRequest,
-  authenticateRequest,
-} from './validators/authenticate-request'
+  AuthenticateRequestValidator,
+  authenticateRequestValidator,
+} from './validators/authenticate-request.validator'
 
 @Controller('/auth')
 export class AuthenticateController {
@@ -22,8 +22,8 @@ export class AuthenticateController {
   ) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(authenticateRequest))
-  async handler(@Body() body: AuthenticateRequest) {
+  @UsePipes(new ZodValidationPipe(authenticateRequestValidator))
+  async handler(@Body() body: AuthenticateRequestValidator) {
     const { email, password } = body
 
     const user = await this.prisma.user.findUnique({
