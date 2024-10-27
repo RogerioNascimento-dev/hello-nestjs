@@ -4,4 +4,4 @@ export const jwtHeaderValidator = z.object({
   sub: z.string().uuid(),
 })
 
-export type JwtHeaderValidator = z.infer<typeof jwtHeaderValidator>
+export type AuthUser = z.infer<typeof jwtHeaderValidator>

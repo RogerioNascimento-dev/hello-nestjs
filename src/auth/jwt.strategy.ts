@@ -3,10 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { Env } from 'src/env'
-import {
-  jwtHeaderValidator,
-  JwtHeaderValidator,
-} from './validators/jwt-header.validator'
+import { AuthUser, jwtHeaderValidator } from './validators/jwt-header.validator'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: JwtHeaderValidator) {
+  async validate(payload: AuthUser) {
     return jwtHeaderValidator.parse(payload)
   }
 }
