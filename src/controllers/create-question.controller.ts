@@ -1,9 +1,9 @@
+import { CurrentUser } from '@/auth/corrent-user.decorator'
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
+import { AuthUser } from '@/auth/validators/jwt-header.validator'
+import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
+import { PrismaService } from '@/prisma/prisma.service'
 import { Body, Controller, Post, UseGuards } from '@nestjs/common'
-import { CurrentUser } from 'src/auth/corrent-user.decorator'
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { AuthUser } from 'src/auth/validators/jwt-header.validator'
-import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
-import { PrismaService } from 'src/prisma/prisma.service'
 import {
   CreateQuestionRequestValidator,
   createQuestionRequestValidator,

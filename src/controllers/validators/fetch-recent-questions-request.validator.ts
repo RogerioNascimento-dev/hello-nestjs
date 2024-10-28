@@ -1,4 +1,4 @@
-import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
+import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
 import { z } from 'zod'
 
 export const pageQueryParams = z
