@@ -1,5 +1,5 @@
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
-import { PrismaService } from '@/prisma/prisma.service'
+import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { Controller, Get, Query, UseGuards } from '@nestjs/common'
 import {
   PageQueryParams,
