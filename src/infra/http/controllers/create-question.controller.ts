@@ -1,8 +1,8 @@
 import { CurrentUser } from '@/infra/auth/corrent-user.decorator'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { AuthUser } from '@/infra/auth/validators/jwt-header.validator'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { PrismaService } from '@/infra/prisma/prisma.service'
 import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import {
   CreateQuestionRequestValidator,

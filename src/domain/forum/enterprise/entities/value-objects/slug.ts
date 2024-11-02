@@ -5,6 +5,10 @@ export class Slug {
     this.value = value
   }
 
+  static create(value: string): Slug {
+    return new Slug(value)
+  }
+
   /**
    * Recives a string and normalize it as a slug
    *

@@ -8,13 +8,13 @@ import { Slug } from './value-objects/slug'
 
 export interface QuestionProps {
   authorId: UniqueEntityID
-  bastAnswerId?: UniqueEntityID
+  bastAnswerId?: UniqueEntityID | null
   title: string
   slug: Slug
   attachments: QuestionAttachmentList
   content: string
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Question extends AggregateRoot<QuestionProps> {
@@ -70,12 +70,13 @@ export class Question extends AggregateRoot<QuestionProps> {
     return dayjs().diff(this.createdAt, 'day') <= 3
   }
 
-  set bastAnswerId(bastAnswerId: UniqueEntityID | undefined) {
-    if (bastAnswerId === undefined) {
+  set bastAnswerId(bastAnswerId: UniqueEntityID | undefined | null) {
+    if (bastAnswerId === undefined || bastAnswerId === null) {
       return
     }
     if (
       this.props.bastAnswerId === undefined ||
+      this.props.bastAnswerId === null ||
       !this.props.bastAnswerId.equals(bastAnswerId)
     ) {
       this.addDomainEvent(new QuestionBastAnswerChosenEvent(this, bastAnswerId))
