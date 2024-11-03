@@ -10,9 +10,9 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { waitFor } from 'test/utils/wait-for'
 import { MockInstance } from 'vitest'
 import {
-    SendNotificationUseCase,
-    SendNotificationUseCaseRequest,
-    SendNotificationUseCaseResponse,
+  SendNotificationUseCase,
+  SendNotificationUseCaseRequest,
+  SendNotificationUseCaseResponse,
 } from '../use-cases/send-notification'
 import { OnQuestionBastAnswerChosen } from './on-question-bast-answer-chosen'
 

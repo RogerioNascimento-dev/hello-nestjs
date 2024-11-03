@@ -1,4 +1,4 @@
-import { Student } from '../../enterprise/entities/student';
+import { Student } from '../../enterprise/entities/student'
 
 export abstract class IStudentsRepository {
   abstract create(student: Student): Promise<void>
