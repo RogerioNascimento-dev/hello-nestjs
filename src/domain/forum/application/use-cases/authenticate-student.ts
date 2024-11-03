@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
-import { Encrypter } from '../cryptography/encrypter'
-import { HashCompare } from '../cryptography/hash-compare'
+import { IEncrypter } from '../cryptography/encrypter'
+import { IHashCompare } from '../cryptography/hash-compare'
 import { IStudentsRepository } from '../repositories/students-repository'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 
@@ -19,8 +19,8 @@ type AuthenticateStudentUseCaseResponse = Either<
 export class AuthenticateStudentUseCase {
   constructor(
     private studentRepository: IStudentsRepository,
-    private hashCompare: HashCompare,
-    private encrypter: Encrypter,
+    private hashCompare: IHashCompare,
+    private encrypter: IEncrypter,
   ) {}
 
   async execute({
