@@ -10,7 +10,7 @@ export class PrismaStudentsRepository implements IStudentsRepository {
 
   async create(student: Student): Promise<void> {
     const data = PrismaStudentMapper.toPrisma(student)
-    this.prisma.user.create({ data })
+    await this.prisma.user.create({ data })
   }
 
   async findByEmail(email: string): Promise<Student | null> {
