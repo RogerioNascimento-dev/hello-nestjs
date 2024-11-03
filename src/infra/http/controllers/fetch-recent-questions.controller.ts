@@ -1,6 +1,12 @@
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
-import { Controller, Get, Query, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+} from '@nestjs/common'
 import { QuestionPresenter } from '../presenters/question-presenter'
 import {
   PageQueryParams,
@@ -15,7 +21,7 @@ export class FetchRecentQuestionsController {
   async handler(@Query('page', pageQueryParamsPipe) page: PageQueryParams) {
     const result = await this.fetchRecentQuestions.execute({ page })
     if (result.isLeft()) {
-      throw new Error('Unexpected error')
+      throw new BadRequestException()
     }
     const { questions } = result.value
 
