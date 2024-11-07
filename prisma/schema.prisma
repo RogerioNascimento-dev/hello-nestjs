@@ -69,7 +69,7 @@ model Answer {
 
 model Comment {
   id         String  @id @default(uuid())
-  contend    String
+  content    String
   authorId   String  @map("author_id")
   questionId String? @map("question_id")
   answerId   String? @map("answer_id")
