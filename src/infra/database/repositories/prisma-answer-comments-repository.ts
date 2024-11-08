@@ -1,5 +1,5 @@
 import { PaginateParams } from '@/core/repositories/paginate-params'
-import { IAnswerCommentRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
+import { IAnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
 import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
 import { Injectable } from '@nestjs/common'
 import { PrismaAnswerCommentMapper } from '../mappers/prisma-answer-comment-mapper'
@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service'
 
 @Injectable()
 export class PrismaAnswerCommentsRepository
-  implements IAnswerCommentRepository
+  implements IAnswerCommentsRepository
 {
   constructor(private prisma: PrismaService) {}
 

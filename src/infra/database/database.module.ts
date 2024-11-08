@@ -1,3 +1,8 @@
+import { IAnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
+import { IAnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
+import { IAnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
+import { IQuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import { IQuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
 import { IQuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { IStudentsRepository } from '@/domain/forum/application/repositories/students-repository'
 import { Module } from '@nestjs/common'
@@ -21,21 +26,36 @@ import { PrismaStudentsRepository } from './repositories/prisma-students-reposit
       provide: IStudentsRepository,
       useClass: PrismaStudentsRepository,
     },
-    PrismaAnswerAttachmentsRepository,
-    PrismaAnswerCommentsRepository,
-    PrismaQuestionAttachmentsRepository,
-    PrismaQuestionCommentsRepository,
-    PrismaAnswersRepository,
+    {
+      provide: IAnswerAttachmentsRepository,
+      useClass: PrismaAnswerAttachmentsRepository,
+    },
+    {
+      provide: IAnswerCommentsRepository,
+      useClass: PrismaAnswerCommentsRepository,
+    },
+    {
+      provide: IQuestionAttachmentsRepository,
+      useClass: PrismaQuestionAttachmentsRepository,
+    },
+    {
+      provide: IQuestionCommentsRepository,
+      useClass: PrismaQuestionCommentsRepository,
+    },
+    {
+      provide: IAnswersRepository,
+      useClass: PrismaAnswersRepository,
+    },
   ],
   exports: [
     PrismaService,
     IQuestionsRepository,
     IStudentsRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaAnswerCommentsRepository,
-    PrismaQuestionAttachmentsRepository,
-    PrismaQuestionCommentsRepository,
-    PrismaAnswersRepository,
+    IAnswerAttachmentsRepository,
+    IAnswerCommentsRepository,
+    IQuestionAttachmentsRepository,
+    IQuestionCommentsRepository,
+    IAnswersRepository,
   ],
 })
 export class DatabaseModule {}
