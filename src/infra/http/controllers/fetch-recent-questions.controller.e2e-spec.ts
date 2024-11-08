@@ -29,35 +29,33 @@ describe('Fetch recent questions (E2E)', () => {
     const user = await studentFactory.makePrismaStudent()
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    await questionFactory.makePrismaQuestion({
-      title: 'Question 1?',
-      authorId: user.id,
-    })
-
-    await questionFactory.makePrismaQuestion({
-      title: 'Question 2?',
-      authorId: user.id,
-    })
-
-    await questionFactory.makePrismaQuestion({
-      title: 'Question 3?',
-      authorId: user.id,
-    })
+    await Promise.all([
+      questionFactory.makePrismaQuestion({
+        title: 'Question 1?',
+        authorId: user.id,
+      }),
+      questionFactory.makePrismaQuestion({
+        title: 'Question 2?',
+        authorId: user.id,
+      }),
+      questionFactory.makePrismaQuestion({
+        title: 'Question 3?',
+        authorId: user.id,
+      }),
+    ])
 
     const response = await request(app.getHttpServer())
       .get('/questions')
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        questions: [
-          expect.objectContaining({ title: 'Question 3?' }),
-          expect.objectContaining({ title: 'Question 2?' }),
-          expect.objectContaining({ title: 'Question 1?' }),
-        ],
-      }),
-    )
+    expect(response.body).toEqual({
+      questions: [
+        expect.objectContaining({ title: 'Question 1?' }),
+        expect.objectContaining({ title: 'Question 2?' }),
+        expect.objectContaining({ title: 'Question 3?' }),
+      ],
+    })
     expect(response.body.questions).toHaveLength(3)
   })
 })
