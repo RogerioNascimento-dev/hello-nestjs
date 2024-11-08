@@ -8,7 +8,7 @@ import request from 'supertest'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 
-describe('Edit Questions (E2E)', () => {
+describe('Delete Question (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -28,28 +28,22 @@ describe('Edit Questions (E2E)', () => {
     await app.init()
   })
 
-  test('[PUT] /questions/:id', async () => {
+  test('[DELETE] /questions/:id', async () => {
     const user = await studentFactory.makePrismaStudent()
-
     const accessToken = jwt.sign({ sub: user.id.toString() })
-
-    const title = 'This is a edited title question?'
-    const content = 'edited content'
-
     const question = await questionFactory.makePrismaQuestion({
       authorId: user.id,
     })
-
     const response = await request(app.getHttpServer())
-      .put(`/questions/${question.id.toString()}`)
-      .send({ title, content })
+      .delete(`/questions/${question.id.toString()}`)
       .set('Authorization', `Bearer ${accessToken}`)
+      .send()
 
     const questionEdited = await prisma.question.findUnique({
       where: { id: question.id.toValue() },
     })
 
     expect(response.statusCode).toBe(204)
-    expect(questionEdited).toEqual(expect.objectContaining({ title, content }))
+    expect(questionEdited).toBeNull()
   })
 })
