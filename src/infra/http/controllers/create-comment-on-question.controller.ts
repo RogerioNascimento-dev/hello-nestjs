@@ -28,8 +28,6 @@ export class CreateCommentQuestionController {
     const { content } = body
     const authorId = user.sub
 
-    console.log('CONTROLLER HERE', content, questionId, authorId)
-
     const result = await this.commentQuestionUseCase.execute({
       content,
       questionId,
