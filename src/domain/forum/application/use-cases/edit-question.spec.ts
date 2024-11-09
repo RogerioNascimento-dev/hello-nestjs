@@ -85,4 +85,41 @@ describe('Edit question by id', async () => {
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)
   })
+
+  it('should sync new and removed attachments when editing a question', async () => {
+    const newQuestion = makeQuestion()
+    await repository.create(newQuestion)
+
+    questionAttachmentsRepository.items.push(
+      makeQuestionAttachment({
+        questionId: newQuestion.id,
+        attachmentId: new UniqueEntityID('1'),
+      }),
+    )
+    questionAttachmentsRepository.items.push(
+      makeQuestionAttachment({
+        questionId: newQuestion.id,
+        attachmentId: new UniqueEntityID('2'),
+      }),
+    )
+
+    const result = await sut.execute({
+      questionId: newQuestion.id.toString(),
+      authorId: newQuestion.authorId.toString(),
+      title: 'new title edited',
+      content: 'new content edited',
+      attachmentsIds: ['1', '3', '4'],
+    })
+
+    expect(result.isRight()).toBe(true)
+
+    expect(questionAttachmentsRepository.items).toHaveLength(3)
+    expect(questionAttachmentsRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
+        expect.objectContaining({ attachmentId: new UniqueEntityID('3') }),
+        expect.objectContaining({ attachmentId: new UniqueEntityID('4') }),
+      ]),
+    )
+  })
 })
