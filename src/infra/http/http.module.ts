@@ -37,6 +37,7 @@ import { FetchQuestionAnswersController } from './controllers/fetch-question-ans
 import { FetchQuestionCommentsController } from './controllers/fetch-question-comments.controller'
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller'
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller'
+import { UploadAttachmentController } from './controllers/upload-attachment.controller'
 @Module({
   providers: [
     CreateQuestionUseCase,
@@ -77,6 +78,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     DeleteAnswerCommentController,
     FetchQuestionCommentsController,
     FetchAnswerCommentsController,
+    UploadAttachmentController,
   ],
   imports: [DatabaseModule, CryptographyModule],
 })
