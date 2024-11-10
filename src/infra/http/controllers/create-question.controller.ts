@@ -17,14 +17,14 @@ export class CreateQuestionController {
     body: CreateQuestionRequestValidator,
     @CurrentUser() user: AuthUser,
   ) {
-    const { title, content } = body
+    const { title, content, attachments } = body
     const userId = user.sub
 
     const result = await this.createQuestionUseCase.execute({
       title,
       content,
       authorId: userId,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     })
 
     if (result.isLeft()) {
