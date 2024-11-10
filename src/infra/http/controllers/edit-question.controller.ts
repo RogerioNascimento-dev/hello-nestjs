@@ -26,7 +26,7 @@ export class EditQuestionController {
     @CurrentUser() user: AuthUser,
     @Param('id') questionId: string,
   ) {
-    const { title, content } = body
+    const { title, content, attachments } = body
     const userId = user.sub
 
     const result = await this.editQuestionUseCase.execute({
@@ -34,7 +34,7 @@ export class EditQuestionController {
       content,
       authorId: userId,
       questionId,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     })
 
     if (result.isLeft()) {
