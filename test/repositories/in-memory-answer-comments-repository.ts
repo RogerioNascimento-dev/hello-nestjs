@@ -1,9 +1,9 @@
 import { PaginateParams } from '@/core/repositories/paginate-params'
-import { IAnswerCommentRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
+import { IAnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
 import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
 
 export class InMemoryAnswerCommentRepository
-  implements IAnswerCommentRepository
+  implements IAnswerCommentsRepository
 {
   public items: AnswerComment[] = []
   private perPage = 10

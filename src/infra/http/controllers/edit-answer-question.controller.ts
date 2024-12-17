@@ -26,14 +26,14 @@ export class EditAnswerQuestionController {
     @CurrentUser() user: AuthUser,
     @Param('id') answerId: string,
   ) {
-    const { content } = body
+    const { content, attachments } = body
     const authorId = user.sub
 
     const result = await this.editAnswerUseCase.execute({
       content,
       answerId,
       authorId,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     })
 
     if (result.isLeft()) {

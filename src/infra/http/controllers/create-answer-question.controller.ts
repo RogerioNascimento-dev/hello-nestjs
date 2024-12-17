@@ -26,14 +26,14 @@ export class CreateAnswerQuestionController {
     @CurrentUser() user: AuthUser,
     @Param('questionId') questionId: string,
   ) {
-    const { content } = body
+    const { content, attachments } = body
     const authorId = user.sub
 
     const result = await this.answerQuestionUseCase.execute({
       content,
       questionId,
       authorId,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     })
 
     if (result.isLeft()) {
