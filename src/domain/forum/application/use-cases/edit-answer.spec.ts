@@ -106,8 +106,6 @@ describe('Edit answer by id', async () => {
     })
 
     expect(result.isRight()).toBe(true)
-    console.log('QUANTIDADE DE ITENS', answerAttachmentsRepository.items.length)
-
     expect(answerAttachmentsRepository.items).toHaveLength(2)
     expect(answerAttachmentsRepository.items).toEqual(
       expect.arrayContaining([
