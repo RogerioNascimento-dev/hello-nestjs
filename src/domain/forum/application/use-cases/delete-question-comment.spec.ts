@@ -5,19 +5,27 @@ import { InMemoryQuestionCommentRepository } from 'test/repositories/in-memory-q
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { DeleteQuestionCommentUseCase } from './delete-question-comment'
 
 let repository: InMemoryQuestionCommentRepository
 let questionRepository: InMemoryQuestionsRepository
 let sut: DeleteQuestionCommentUseCase
 let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
+let attachmentsRepository: InMemoryAttachmentsRepository
+let studentRepository: InMemoryStudentsRepository
 
 describe('Delete Question Comment', async () => {
   beforeEach(() => {
+    attachmentsRepository = new InMemoryAttachmentsRepository()
+    studentRepository = new InMemoryStudentsRepository()
     questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
-    repository = new InMemoryQuestionCommentRepository()
+    repository = new InMemoryQuestionCommentRepository(studentRepository)
     questionRepository = new InMemoryQuestionsRepository(
       questionAttachmentsRepository,
+      attachmentsRepository,
+      studentRepository,
     )
     sut = new DeleteQuestionCommentUseCase(repository)
   })

@@ -3,18 +3,28 @@ import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import { makeQuestion } from 'test/factories/make-question'
 import { makeQuestionAttachment } from 'test/factories/make-question-attachment'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { EditQuestionUseCase } from './edit-question'
 
 let repository: InMemoryQuestionsRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: EditQuestionUseCase
+let attachmentsRepository: InMemoryAttachmentsRepository
+let studentRepository: InMemoryStudentsRepository
 
 describe('Edit question by id', async () => {
   beforeEach(() => {
+    attachmentsRepository = new InMemoryAttachmentsRepository()
+    studentRepository = new InMemoryStudentsRepository()
     questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
-    repository = new InMemoryQuestionsRepository(questionAttachmentsRepository)
+    repository = new InMemoryQuestionsRepository(
+      questionAttachmentsRepository,
+      attachmentsRepository,
+      studentRepository,
+    )
     sut = new EditQuestionUseCase(repository, questionAttachmentsRepository)
   })
 

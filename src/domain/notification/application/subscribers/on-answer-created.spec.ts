@@ -1,4 +1,3 @@
-import { IQuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
 import { IQuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { makeAnswer } from 'test/factories/make-answer'
 import { makeQuestion } from 'test/factories/make-question'
@@ -8,6 +7,8 @@ import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-not
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { waitFor } from 'test/utils/wait-for'
 import { MockInstance } from 'vitest'
 import {
@@ -20,7 +21,7 @@ import { OnAnswerCreated } from './on-answer-created'
 let answersRepository: InMemoryAnswersRepository
 let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let questionRepository: IQuestionsRepository
-let questionAttachmentsRepository: IQuestionAttachmentsRepository
+let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sendNotificationUseCase: SendNotificationUseCase
 let inMemoryNotificationRepository: InMemoryNotificationsRepository
 let sendNotificationExecuteSpy: MockInstance<
@@ -29,11 +30,18 @@ let sendNotificationExecuteSpy: MockInstance<
   ) => Promise<SendNotificationUseCaseResponse>
 >
 
+let attachmentsRepository: InMemoryAttachmentsRepository
+let studentRepository: InMemoryStudentsRepository
+
 describe('On Answer Created', () => {
   beforeEach(() => {
+    attachmentsRepository = new InMemoryAttachmentsRepository()
+    studentRepository = new InMemoryStudentsRepository()
     questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
     questionRepository = new InMemoryQuestionsRepository(
       questionAttachmentsRepository,
+      attachmentsRepository,
+      studentRepository,
     )
     answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
     answersRepository = new InMemoryAnswersRepository(
