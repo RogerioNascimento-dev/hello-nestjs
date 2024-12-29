@@ -6,7 +6,7 @@ import {
   Param,
   Query,
 } from '@nestjs/common'
-import { CommentPresenter } from '../presenters/comment-presenter'
+import { CommentWithAuthorPresenter } from '../presenters/comment-with-author-presenter'
 import {
   PageQueryParams,
   pageQueryParamsPipe,
@@ -27,10 +27,10 @@ export class FetchAnswerCommentsController {
     if (result.isLeft()) {
       throw new BadRequestException()
     }
-    const { answerComments } = result.value
+    const { comments } = result.value
 
     return {
-      answerComments: answerComments.map(CommentPresenter.toHTTP),
+      comments: comments.map(CommentWithAuthorPresenter.toHTTP),
     }
   }
 }

@@ -37,7 +37,9 @@ describe('Fetch answer comments (E2E)', () => {
   })
 
   test('[GET] answers/:answerId/comments', async () => {
-    const user = await studentFactory.makePrismaStudent()
+    const user = await studentFactory.makePrismaStudent({
+      name: 'Fulano de tal',
+    })
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const question = await questionFactory.makePrismaQuestion({
@@ -73,13 +75,22 @@ describe('Fetch answer comments (E2E)', () => {
       .send()
 
     expect(response.statusCode).toBe(200)
-    expect(response.body).toHaveProperty('answerComments')
-    expect(response.body.answerComments).toHaveLength(3)
+    expect(response.body).toHaveProperty('comments')
+    expect(response.body.comments).toHaveLength(3)
     expect(response.body).toEqual({
-      answerComments: expect.arrayContaining([
-        expect.objectContaining({ content: 'Comment 1' }),
-        expect.objectContaining({ content: 'Comment 2' }),
-        expect.objectContaining({ content: 'Comment 3' }),
+      comments: expect.arrayContaining([
+        expect.objectContaining({
+          content: 'Comment 1',
+          authorName: 'Fulano de tal',
+        }),
+        expect.objectContaining({
+          content: 'Comment 2',
+          authorName: 'Fulano de tal',
+        }),
+        expect.objectContaining({
+          content: 'Comment 3',
+          authorName: 'Fulano de tal',
+        }),
       ]),
     })
   })
