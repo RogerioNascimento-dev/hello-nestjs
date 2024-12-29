@@ -1,12 +1,16 @@
 import { PaginateParams } from '@/core/repositories/paginate-params'
-import { IQuestionCommentRepository } from '@/domain/forum/application/repositories/question-comments-repository'
+import { IQuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
 import { QuestionComment } from '@/domain/forum/enterprise/entities/question-comment'
+import { CommentWithAuthor } from '@/domain/forum/enterprise/entities/value-objects/comment-with-author'
+import { InMemoryStudentsRepository } from './in-memory-students-repository'
 
 export class InMemoryQuestionCommentRepository
-  implements IQuestionCommentRepository
+  implements IQuestionCommentsRepository
 {
   public items: QuestionComment[] = []
   private perPage = 10
+
+  constructor(private inMemoryStudentsRepository: InMemoryStudentsRepository) {}
   async findById(id: string) {
     const questionComment = this.items.find((item) => item.id.toValue() === id)
     if (!questionComment) {
@@ -29,5 +33,33 @@ export class InMemoryQuestionCommentRepository
 
   async create(questionComment: QuestionComment) {
     this.items.push(questionComment)
+  }
+
+  async findManyByQuestionIdWithAuthor(
+    questionId: string,
+    { page }: PaginateParams,
+  ) {
+    const questionComments = this.items
+      .filter((item) => item.questionId.toValue() === questionId)
+      .slice((page - 1) * this.perPage, page * this.perPage)
+      .map((comment) => {
+        const author = this.inMemoryStudentsRepository.items.find((student) =>
+          student.id.equals(comment.authorId),
+        )
+        if (!author) {
+          throw new Error(
+            `Author with id ${comment.authorId.toString()} does not found.`,
+          )
+        }
+        return CommentWithAuthor.create({
+          content: comment.content,
+          commentId: comment.id,
+          createdAt: comment.createdAt,
+          updatedAt: comment.updatedAt,
+          authorId: comment.authorId,
+          author: author.name,
+        })
+      })
+    return questionComments
   }
 }
