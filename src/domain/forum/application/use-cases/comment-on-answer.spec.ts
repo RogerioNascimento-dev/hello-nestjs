@@ -2,6 +2,7 @@ import { makeAnswer } from 'test/factories/make-answer'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 import { InMemoryAnswerCommentRepository } from 'test/repositories/in-memory-answer-comments-repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { CommentOnAnswerUseCase } from './comment-on-answer'
 
 let repository: InMemoryAnswerCommentRepository
@@ -12,7 +13,9 @@ let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 describe('Create Comment On Answer', async () => {
   beforeEach(() => {
     answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
-    repository = new InMemoryAnswerCommentRepository()
+    repository = new InMemoryAnswerCommentRepository(
+      new InMemoryStudentsRepository(),
+    )
     answerRepository = new InMemoryAnswersRepository(
       answerAttachmentsRepository,
     )

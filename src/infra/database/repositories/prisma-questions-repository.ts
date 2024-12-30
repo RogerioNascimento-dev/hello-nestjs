@@ -2,7 +2,9 @@ import { PaginateParams } from '@/core/repositories/paginate-params'
 import { IQuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
 import { IQuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { Question } from '@/domain/forum/enterprise/entities/question'
+import { QuestionDetails } from '@/domain/forum/enterprise/entities/value-objects/question-details'
 import { Injectable } from '@nestjs/common'
+import { PrismaQuestionDetailsMapper } from '../mappers/prisma-question-details-mapper'
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper'
 import { PrismaService } from '../prisma/prisma.service'
 
@@ -23,6 +25,15 @@ export class PrismaQuestionsRepository implements IQuestionsRepository {
     const question = await this.prisma.question.findUnique({ where: { slug } })
     if (!question) return null
     return PrismaQuestionMapper.toDomain(question)
+  }
+
+  async findBySlugWithDetails(slug: string): Promise<QuestionDetails | null> {
+    const question = await this.prisma.question.findUnique({
+      where: { slug },
+      include: { attachments: true, author: true },
+    })
+    if (!question) return null
+    return PrismaQuestionDetailsMapper.toDomain(question)
   }
 
   async findManyRecent({ page }: PaginateParams): Promise<Question[]> {
